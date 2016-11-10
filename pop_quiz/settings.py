@@ -62,7 +62,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "asgi_redis.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [redis_url],
+            "hosts": ['redis://:' + str(redis_url.password) + '@' + str(redis_url.hostname) + ':' + str(redis_url.port)],
         },
         "ROUTING": "pop_quiz.routing.channel_routing",
     },
