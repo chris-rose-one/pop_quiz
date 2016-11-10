@@ -56,11 +56,15 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'pop_quiz.urls'
 
+redis_url = urlparse.urlparse(os.environ.get('REDIS_URL'))
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "asgi_redis.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": os.environ['REDIS_URL'],
+        "LOCATION": "{0}:{1}".format(redis_url.hostname, redis_url.port),
+         "OPTIONS": {
+             "PASSWORD": redis_url.password,
+             "DB": 0,
+        }
         },
         "ROUTING": "pop_quiz.routing.channel_routing",
     },
