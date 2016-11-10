@@ -85,7 +85,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'pop_quiz.wsgi.application'
-redis://h:pb9k6vbre5aeoe6eik5jb6ni9j7@ec2-54-225-80-250.compute-1.amazonaws.com:20049
 #SECURE_CONTENT_TYPE_NOSNIFF = True
 #SECURE_BROWSER_XSS_FILTER = True
 #SECURE_SSL_REDIRECT = True
