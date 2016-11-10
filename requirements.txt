@@ -8,7 +8,7 @@ dj-database-url==0.4.1
 Django==1.10
 msgpack-python==0.4.8
 posix-ipc==1.0.0
-pyscopg2==2.6.2
+psycopg2==2.6.2
 redis==2.10.5
 six==1.10.0
 Twisted==16.2.0
