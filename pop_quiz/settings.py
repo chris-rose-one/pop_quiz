@@ -57,11 +57,12 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'pop_quiz.urls'
 
 redis_url = urlparse.urlparse(os.environ.get('REDIS_URL'))
+
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "asgi_redis.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [redis_url],
+            "hosts": ['redis://:' + redis_url.password + '@' + redis_url.hostname + ':' +redis_url.port],
         },
         "ROUTING": "pop_quiz.routing.channel_routing",
     },
@@ -84,7 +85,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'pop_quiz.wsgi.application'
-
+redis://h:pb9k6vbre5aeoe6eik5jb6ni9j7@ec2-54-225-80-250.compute-1.amazonaws.com:20049
 #SECURE_CONTENT_TYPE_NOSNIFF = True
 #SECURE_BROWSER_XSS_FILTER = True
 #SECURE_SSL_REDIRECT = True
