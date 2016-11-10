@@ -4,6 +4,7 @@ asgiref==0.14.0
 autobahn==0.15.0
 channels==0.17.1
 daphne==0.14.3
+dj-database-url==0.4.1
 Django==1.10
 msgpack-python==0.4.8
 posix-ipc==1.0.0
