@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'polls/poll_style.css' %}" />
+{% endblock %}
+
+{% block content %}
+<h2>{{ question.question_text }}</h2>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% if question %}
+<svg class="chart" xmlns="http://www.w3.org/2000/svg" version="1.1" preserveAspectRatio="xMinYMin meet"></svg>
+<script>
+{% autoescape off %}
+var data = {{ choices }}, 
+	vote_limit = {{ question.vote_limit }};
+	question_id = {{ question.id }}
+{% endautoescape %}
+</script>
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script src="{% static 'polls/poll_client_interface.js' %}"></script>
+{% endif %}
+{% endblock %}
