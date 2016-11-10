@@ -60,10 +60,12 @@ redis_url = urlparse.urlparse(os.environ.get('REDIS_URL'))
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "asgi_redis.RedisChannelLayer",
-        "LOCATION": "{0}:{1}".format(redis_url.hostname, redis_url.port),
-         "OPTIONS": {
-             "PASSWORD": redis_url.password,
-             "DB": 0,
+        "CONFIG": {
+            "hosts": [(redis_url.hostname, redis_url.port)],
+        },
+        "OPTIONS": {
+			"PASSWORD": redis_url.password,
+			"DB": 0,
         },
         "ROUTING": "pop_quiz.routing.channel_routing",
     },
@@ -97,7 +99,7 @@ WSGI_APPLICATION = 'pop_quiz.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 urlparse.uses_netloc.append("postgres")
-url = urlparse.urlparse(os.environ["DATABASE_URL"])
+url = urlparse.urlparse(os.environ.get('DATABASE_URL'))
 
 DATABASES = {
     'default': {
