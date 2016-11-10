@@ -64,7 +64,6 @@ CHANNEL_LAYERS = {
          "OPTIONS": {
              "PASSWORD": redis_url.password,
              "DB": 0,
-        }
         },
         "ROUTING": "pop_quiz.routing.channel_routing",
     },
