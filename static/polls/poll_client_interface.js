@@ -56,6 +56,7 @@ var labels = chart.append("g")
 
 socket.onmessage = function(message) {
 	data = JSON.parse(message.data);
+	console.log(data)
 	var x = d3.scale.linear()
     	.domain([0, vote_limit])
     	.range([12, width]);
