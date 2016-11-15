@@ -11,10 +11,11 @@ class Question(models.Model):
 	active = models.BooleanField(default=False)
 	
 	def choices_as_json(self):
-		data = []
+		tmp_data = []
 		for choice in self.choice_set.all():
-			data.append({'id': choice.id, 'choice_text': choice.choice_text, 'votes': choice.votes})
-		return json.dumps(data)
+			tmp_data.append({'id': choice.id, 'choice_text': choice.choice_text, 'votes': choice.votes})
+		sorted_data = sorted(tmp_data, key=lambda k: k['id'])
+		return json.dumps(sorted_data)
 	
 	def __str__(self):
 		return self.question_text
