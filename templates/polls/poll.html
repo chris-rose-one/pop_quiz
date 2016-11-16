@@ -18,6 +18,6 @@ var data = {{ choices }},
 {% endautoescape %}
 </script>
 <script src="https://d3js.org/d3.v3.min.js"></script>
-<script src="{% static 'polls/poll_client_interface.js' %}"></script>
+<script type="text/javascript" src="{% static 'polls/poll_client_interface.js' %}"></script>
 {% endif %}
 {% endblock %}

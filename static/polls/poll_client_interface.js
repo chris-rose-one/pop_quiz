@@ -1,4 +1,4 @@
-socket = new WebSocket("ws://" + window.location.host);
+socket = new WebSocket("wss://" + window.location.host);
 
 var width = 420,
     barHeight = 50;
