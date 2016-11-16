@@ -85,10 +85,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'pop_quiz.wsgi.application'
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_SSL_REDIRECT = True
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
