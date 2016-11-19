@@ -84,8 +84,6 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'pop_quiz.wsgi.application'
-
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 urlparse.uses_netloc.append("postgres")
