@@ -13,17 +13,17 @@ class ChoiceInline(admin.TabularInline):
 
 class QuestionAdmin(admin.ModelAdmin):
 	fieldsets = [
-		(None,			{'fields': ['question_text', 'vote_limit', 'one_vote_only', 'active', 'open']}),
+		(None,			{'fields': ['question_text', 'vote_limit', 'one_vote_only', 'is_active', 'is_open']}),
 	]
 	inlines = [ChoiceInline]
 
 	list_display = ('question_text', 'active')
 
 	def save_model(self, request, obj, form, change):
-		if obj.active == True:
+		if obj.is_active == True:
 			for question in Question.objects.all():
-				if question.active is True:
-					question.active = False
+				if question.is_active is True:
+					question.is_active = False
 					question.save()
 		obj.save()
 

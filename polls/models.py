@@ -8,8 +8,8 @@ class Question(models.Model):
 	question_text = models.CharField(max_length=200)
 	vote_limit = models.IntegerField(default=150)
 	one_vote_only = models.BooleanField(default=False)
-	active = models.BooleanField(default=False)
-	open = models.BooleanField(default=False)
+	is_active = models.BooleanField(default=False)
+	is_open = models.BooleanField(default=False)
 
 	def choices_as_json(self):
 		data = []

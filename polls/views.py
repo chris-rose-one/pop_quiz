@@ -5,7 +5,7 @@ from .models import Question, Choice
 
 def poll(request):
 	for question in Question.objects.all():
-		if question.active == True:
+		if question.is_active == True:
 			if not question.id == request.session.get('loaded_question'):
 				request.session.set_expiry(1200)
 				request.session['loaded_question'] = question.id
