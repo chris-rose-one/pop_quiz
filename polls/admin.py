@@ -17,7 +17,7 @@ class QuestionAdmin(admin.ModelAdmin):
 	]
 	inlines = [ChoiceInline]
 
-	list_display = ('question_text', 'active')
+	list_display = ('question_text', 'is_active')
 
 	def save_model(self, request, obj, form, change):
 		if obj.is_active == True:
