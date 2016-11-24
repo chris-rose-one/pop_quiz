@@ -40,5 +40,6 @@ def ws_vote(message):
 				question.save()
 
 # Connected to websocket.disconnect
+@channel_session_user
 def ws_disconnect(message):
     Group("poll").discard(message.reply_channel)
