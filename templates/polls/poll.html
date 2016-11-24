@@ -10,11 +10,13 @@
 <h2>{{ question.question_text }}</h2>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 {% if question %}
-{% if question.one_vote_only %}
-<p class="description">one vote only</p>
-{% else %}
-<p class="description">vote as many times as you like</p>
-{% endif %}
+<div class="description">
+	{% if question.one_vote_only %}
+	<p>one vote only</p>
+	{% else %}
+	<p>vote as many times as you like</p>
+	{% endif %}
+</div>
 <svg class="chart" xmlns="http://www.w3.org/2000/svg" version="1.1" preserveAspectRatio="xMinYMin meet"></svg>
 <script>
 var session_key = "{{request.session.session_key }}";
