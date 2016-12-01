@@ -1,33 +1,29 @@
 import json
 from channels import Group
 from channels.sessions import channel_session
-from channels.auth import http_session, channel_session_user, channel_session_user_from_http
+from channels.auth import http_session
+from django.contrib.sessions.backends.db import SessionStore
 from .models import Question, Choice
 
 # Connected to websocket.connect
 @http_session
-@channel_session_user_from_http
+@channel_session
 def ws_connect(message):
-	keys = []
-	for key in message.http_session.keys():
-		if key not in message.channel_session.keys():
-			keys.append((key, message.http_session[key]))
-	else:
-		for key in keys:
-			message.channel_session[key[0]] = key[1]
+	message.channel_session['http_session_key'] = message.http_session.session_key
 	Group("poll").add(message.reply_channel)
 
 # Connected to websocket.receive
-@channel_session_user
+@channel_session
 def ws_vote(message):
-	print(message.channel_session.items())
+	http_session = SessionStore(session_key=message.channel_session['http_session_key'])
 	data = json.loads(message['text'])
 	question = Question.objects.get(pk=data['question_id'])
 	selected_choice = question.choice_set.get(pk=data['choice_id'])
 	if question.is_open:
 		if not selected_choice.votes >= question.vote_limit:
-			if question.one_vote_only and message.channel_session['has_voted'] == False:
-				message.channel_session['has_voted'] = True
+			if question.one_vote_only and http_session['has_voted'] == False:
+				http_session['has_voted'] = True
+				http_session.save()
 				selected_choice.votes += 1
 				selected_choice.save()
 				Group("poll").send({"text": question.choices_as_json(),})
@@ -40,6 +36,5 @@ def ws_vote(message):
 				question.save()
 
 # Connected to websocket.disconnect
-@channel_session_user
 def ws_disconnect(message):
     Group("poll").discard(message.reply_channel)
