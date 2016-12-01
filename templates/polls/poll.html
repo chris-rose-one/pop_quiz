@@ -12,7 +12,8 @@
 {% if question %}
 <div class="description">
 	{% if not question.is_open %}
-	<p>this poll currently isn't open for voting.</p>
+	<p>this poll currently isn't open for voting.</br>
+		stay calm and connected. A fresh poll will open soon.</p>
 	{% elif question.one_vote_only and not has_voted %}
 	<p>one vote only</p>
 	{% elif question.one_vote_only and has_voted %}
@@ -23,7 +24,6 @@
 </div>
 <svg class="chart" xmlns="http://www.w3.org/2000/svg" version="1.1" preserveAspectRatio="xMinYMin meet"></svg>
 <script>
-var session_key = "{{request.session.session_key }}";
 {% autoescape off %}
 var data = {{ choices }}, 
 	vote_limit = {{ question.vote_limit }},
