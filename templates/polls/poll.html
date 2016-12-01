@@ -11,8 +11,12 @@
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 {% if question %}
 <div class="description">
-	{% if question.one_vote_only %}
+	{% if not question.is_open %}
+	<p>this poll currently isn't open for voting.</p>
+	{% elif question.one_vote_only and not has_voted %}
 	<p>one vote only</p>
+	{% elif question.one_vote_only and has_voted %}
+	<p>you have already cast your vote. Thanks for your contribution</p>
 	{% else %}
 	<p>vote as many times as you like</p>
 	{% endif %}
