@@ -12,8 +12,8 @@
 {% if question %}
 <div class="description">
 	{% if not question.is_open %}
-	<p>this poll currently isn't open for voting.</br>
-		stay calm and connected. A fresh poll will open soon.</p>
+	<p>this poll currently isn't open for voting.</p>
+	<p>stay calm and connected. A fresh poll will open soon.</p>
 	{% elif question.one_vote_only and not has_voted %}
 	<p>one vote only</p>
 	{% elif question.one_vote_only and has_voted %}

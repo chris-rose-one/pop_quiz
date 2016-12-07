@@ -19,7 +19,8 @@ def ws_vote(message):
 	data = json.loads(message['text'])
 	question = Question.objects.get(pk=data['question_id'])
 	selected_choice = question.choice_set.get(pk=data['choice_id'])
-	if question.is_active and question.is_open:
+
+	if question.is_active() and question.is_open():
 		if not selected_choice.votes >= question.vote_limit:
 			if question.one_vote_only and http_session['has_voted'] == False:
 				http_session['has_voted'] = True
@@ -31,9 +32,6 @@ def ws_vote(message):
 				selected_choice.votes += 1
 				selected_choice.save()
 				Group("poll").send({"text": question.choices_as_json(),})
-			if selected_choice.votes == question.vote_limit:
-				question.is_open = False
-				question.save()
 
 # Connected to websocket.disconnect
 def ws_disconnect(message):
