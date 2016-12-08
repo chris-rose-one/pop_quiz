@@ -23,9 +23,9 @@ var bar = chart.selectAll("g")
 			"question_id": question_id,
 			"choice_id": d3.select(this).attr("id")
 		}));
-		if(d3.select(".description").style("display") == "block") {
-			d3.select(".description").style("display", "none");
-		}
+		//if(d3.select(".description").style("display") == "block") {
+		//	d3.select(".description").style("display", "none");
+		//}
 	});
 
 bar.append("rect")
