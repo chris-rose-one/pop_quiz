@@ -38,10 +38,6 @@ class Question(models.Model):
 	def __str__(self):
 		return self.question_text
 
-	def save(self, *args, **kwargs):
-		result = super(Question, self).save(*args, **kwargs)
-		return result
-
 class Choice(models.Model):
 	question = models.ForeignKey(Question, on_delete=models.CASCADE)
 	choice_text = models.CharField(max_length=200)
