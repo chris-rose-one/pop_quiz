@@ -13,7 +13,7 @@ class Question(models.Model):
 	vote_limit = models.IntegerField(default=150)
 
 	class Meta:
-		ordering = ['-starting_time']
+		ordering = ('-starting_time')
 
 	def is_active(self):
 		if timezone.now() >= self.starting_time \
