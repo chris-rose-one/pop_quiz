@@ -44,8 +44,9 @@ class QuestionAdmin(admin.ModelAdmin):
 		try: obj_before = sorted_queue[obj_index - 1]
 		except: obj_before = None
 		try: obj_after = sorted_queue[obj_index + 1]
-		except: obj_after = Noneif(obj_before and not obj.starting_time <= (obj_before['starting_time'] + datetime.timedelta(minutes = obj_before['running_time'] + obj_before['remain_active']))) \
-		  or(obj_after and not (obj.starting_time + datetime.timedelta(minutes = obj.running_time + obj.remain_active)) >= obj_after['starting_time']):
+		except: obj_after = None
+		if(obj_before and not obj.starting_time <= (obj_before['starting_time'] + datetime.timedelta(minutes = obj_before['running_time'] + obj_before['remain_active']))) or \
+		  (obj_after and not (obj.starting_time + datetime.timedelta(minutes = obj.running_time + obj.remain_active)) >= obj_after['starting_time']):
 		  	obj.save(force_insert=True)
 
 admin.site.register(Question, QuestionAdmin)
