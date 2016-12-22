@@ -6,7 +6,6 @@ from django.core import serializers
 from django.dispatch import receiver
 from django.db.models.signals import pre_save
 
-
 class Question(models.Model):
 	question_text = models.CharField(max_length=200)
 	starting_time = models.DateTimeField('start time', default=timezone.now)
@@ -24,6 +23,8 @@ class Question(models.Model):
 
 	def get_end_time(self):
 		return self.starting_time + datetime.timedelta(minutes = (self.running_time + self.remain_active))
+
+	end_time = property(get_end_time)
 
 	def is_active(self):
 		if timezone.now() >= self.starting_time \
@@ -63,6 +64,7 @@ def pre_save_handler(sender, instance, *args, **kwargs):
 
 	for question in temp:
 		if question.id == instance.id:
+			question.starting_time = instance.starting_time
 			break
 	else: temp.append(instance)
 
@@ -74,7 +76,5 @@ def pre_save_handler(sender, instance, *args, **kwargs):
 	if obj_index is not 0: obj_before = sorted_queue[obj_index - 1]
 	if obj_index < (len(sorted_queue) - 1): obj_after = sorted_queue[obj_index + 1]
 
-	print(obj_after)
-
 	if(obj_before is not None and instance.starting_time <= obj_before.get_end_time()): raise Exception('clashed with object before')
-	if(obj_after is not None and instance.get_end_time() >= obj_after.starting_time): raise Exception('clashed with object after')
+	elif(obj_after is not None and instance.get_end_time() >= obj_after.starting_time): raise Exception('clashed with object after')

@@ -17,7 +17,7 @@ class QuestionAdmin(admin.ModelAdmin):
 	]
 	inlines = [ChoiceInline]
 
-	list_display = ('question_text', 'starting_time')
+	list_display = ('question_text', 'starting_time', 'end_time')
 
 	def save_model(self, request, *args, **kwargs):
 		try:
