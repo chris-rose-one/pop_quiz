@@ -26,6 +26,10 @@ class Question(models.Model):
 
 	end_time = property(get_end_time)
 
+	def seconds_remaining(self):
+		diff = self.get_end_time() - timezone.now()
+		return diff.total_seconds()
+
 	def is_active(self):
 		if timezone.now() >= self.starting_time \
 		  and timezone.now() <= self.get_end_time():
