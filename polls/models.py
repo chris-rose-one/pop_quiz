@@ -26,10 +26,6 @@ class Question(models.Model):
 
 	end_time = property(get_end_time)
 
-	def seconds_remaining(self):
-		diff = (self.starting_time + datetime.timedelta(minutes = self.running_time)) - timezone.now()
-		return diff.total_seconds()
-
 	def is_active(self):
 		if timezone.now() >= self.starting_time \
 		  and timezone.now() <= self.get_end_time():
@@ -38,10 +34,14 @@ class Question(models.Model):
 
 	def is_open(self):
 		if  timezone.now() >= self.starting_time \
-		  and timezone.now() <= self.get_end_time():
+		  and timezone.now() <= (self.starting_time + datetime.timedelta(minutes = self.running_time)):
 			for choice in self.choice_set.all():
 				if choice.votes == self.vote_limit: return False
 			else: return True
+
+	def seconds_remaining(self):
+		diff = (self.starting_time + datetime.timedelta(minutes = self.running_time)) - timezone.now()
+		return diff.total_seconds()
 
 	def choices_as_json(self):
 		tmp_data = []

@@ -14,12 +14,14 @@
 	{% if not question.is_open %}
 	<p>this poll currently isn't open for voting.</p>
 	<p>stay calm and connected. A fresh poll will open soon.</p>
-	{% elif question.is_open and question.one_vote_only and not has_voted %}
-	<p>one vote only</p>
-	{% elif question.is_open and question.one_vote_only and has_voted %}
-	<p>you have already cast your vote. Thanks for your contribution</p>
 	{% elif question.is_open %}
-	<p>vote as many times as you like</p>
+		{% if question.one_vote_only and not has_voted %}
+		<p>one vote only</p>
+		{% elif question.one_vote_only and has_voted %}
+		<p>you have already cast your vote. Thanks for your contribution</p>
+		{% else %}
+		<p>vote as many times as you like</p>
+		{% endif %}
 	{% endif %}
 </div>
 <svg class="chart" xmlns="http://www.w3.org/2000/svg" version="1.1" preserveAspectRatio="xMinYMin meet"></svg>
