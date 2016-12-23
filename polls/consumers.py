@@ -9,20 +9,20 @@ from .models import Question, Choice
 @http_session
 @channel_session
 def ws_connect(message):
-	message.channel_session['http_session_key'] = message.http_session.session_key
+	if message.http_session: message.channel_session['http_session_key'] = message.http_session.session_key
 	Group("poll").add(message.reply_channel)
 
 # Connected to websocket.receive
 @channel_session
 def ws_vote(message):
-	http_session = SessionStore(session_key=message.channel_session['http_session_key'])
+	http_session = SessionStore(session_key=message.channel_session.get('http_session_key'))
 	data = json.loads(message['text'])
 	question = Question.objects.get(pk=data['question_id'])
 	selected_choice = question.choice_set.get(pk=data['choice_id'])
 
 	if question.is_active() and question.is_open():
 		if not selected_choice.votes >= question.vote_limit:
-			if question.one_vote_only and http_session['has_voted'] == False:
+			if question.one_vote_only and http_session.get('has_voted') == False:
 				http_session['has_voted'] = True
 				http_session.save()
 				selected_choice.votes += 1
