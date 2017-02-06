@@ -35,12 +35,12 @@
 			<div class="panel panel-default">
 				<div class="panel-body">
 					{% if not question.is_open %}
-					voting has closed for the current poll.<br>a fresh poll will open soon.
+					voting has closed for the current poll.</br>a fresh poll will open soon.
 					{% elif question.is_open %}
 						{% if  question.one_vote_only and not has_voted %}
 						one vote only
 						{% elif question.one_vote_only and has_voted %}
-						you have already cast your vote. Thanks for your contribution
+						you have already cast your vote.</br>Thanks for your contribution
 						{% else %}
 						vote as many times as you like
 						{% endif %}
