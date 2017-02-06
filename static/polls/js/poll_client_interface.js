@@ -1,4 +1,4 @@
-socket = new WebSocket("wss://" + window.location.host + "?" + 'foo=bar');
+socket = new WebSocket("wss://" + window.location.host);
 
 var width = 420,
     barHeight = 50;
@@ -8,15 +8,15 @@ var x = d3.scale.linear()
     .range([12, width]);
 
 var chart = d3.select(".chart")
-	.attr("viewBox", "0 0 420 " + ((barHeight + 25) * data.length + 5));
+	.attr("viewBox", "0 0 420 " + ((barHeight + 25) * data.length + 15));
 
 var bar = chart.selectAll("g")
     .data(data)
   .enter().append("g")
   	.attr("id", function(d) { return d.id; })
 	.attr("transform", function(d, i) {
-		if(i > 0) { return "translate(0," + (((i + 1) * barHeight) + (i * 25) - 20) + ")"; }
-		else { return "translate(0," + (i + 1) * 30 + ")"; }
+		if(i > 0) { return "translate(0," + ((i * barHeight) + ((i+1) * 25) + (i * 5)) + ")"; }
+		else { return "translate(0," + 25 + ")"; }
 	})
 	.on("click", function(d) {
     	socket.send(JSON.stringify({
@@ -52,8 +52,8 @@ var labels = chart.append("g")
   .enter().append("text")
   	.attr("class", "label_text")
   	.attr("transform", function(d, i) {
-  		if(i > 0) { return "translate(2," + (((i + 1) * barHeight) + (i * 25) - 26) + ")"; }
-  		else { return "translate(2," + ((i + 1) * 30 - 6) + ")"; }
+  		if(i > 0) { return "translate(2," + ((i * barHeight) + ((i+1) * 25) + (i * 5)  - 6) + ")"; }
+  		else { return "translate(2," + 19 + ")"; }
   	})
     .text(function(d) { return d.choice_text; });
 
