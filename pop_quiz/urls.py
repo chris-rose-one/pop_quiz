@@ -4,6 +4,6 @@ from polls import views
 
 urlpatterns = [
     #url(r'^polls/', include('polls.urls')),
-    url(r'^poll/', views.poll, name='poll'),
+    url(r'^$', views.poll, name='poll'),
     url(r'^admin/', admin.site.urls),
 ]

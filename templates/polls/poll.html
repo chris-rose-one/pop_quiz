@@ -3,28 +3,60 @@
 {% block head %}
 {% block title %}<title>Pop Quiz</title>{% endblock %}
 {% load staticfiles %}
-<link rel="stylesheet" type="text/css" href="{% static 'polls/poll_style.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'polls/css/poll_style.css' %}" />
 {% endblock %}
 
 {% block content %}
-<h2>{{ question.question_text }}</h2>
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-{% if question %}
-<div class="description">
-	{% if not question.is_open %}
-	<p>this poll currently isn't open for voting.</p>
-	<p>stay calm and connected. A fresh poll will open soon.</p>
-	{% elif question.is_open %}
-		{% if question.one_vote_only and not has_voted %}
-		<p>one vote only</p>
-		{% elif question.one_vote_only and has_voted %}
-		<p>you have already cast your vote. Thanks for your contribution</p>
-		{% else %}
-		<p>vote as many times as you like</p>
-		{% endif %}
-	{% endif %}
+
+{% if error_message %}
+<div class="container">
+	<div class="row">
+		<div class="col-xs-12 col-xs-offset-0 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+			</br>
+			<div class="panel panel-default">
+				<div class="panel-body">
+					{{ error_message }}
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-<svg class="chart" xmlns="http://www.w3.org/2000/svg" version="1.1" preserveAspectRatio="xMinYMin meet"></svg>
+{% elif question %}
+<div class="container">
+	<div class="row">
+		<div class="col-xs-12 col-xs-offset-0 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+			<h2>{{ question.question_text }}</h2>
+		</div>
+	</div>
+</div>
+<div class="description container">
+	<div class="row">
+		<div class="col-xs-12 col-xs-offset-0 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					{% if not question.is_open %}
+					voting has closed for the current poll.<br>a fresh poll will open soon.
+					{% elif question.is_open %}
+						{% if  question.one_vote_only and not has_voted %}
+						one vote only
+						{% elif question.one_vote_only and has_voted %}
+						you have already cast your vote. Thanks for your contribution
+						{% else %}
+						vote as many times as you like
+						{% endif %}
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-xs-12 col-xs-offset-0 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+			<svg class="chart" xmlns="http://www.w3.org/2000/svg" version="1.1" preserveAspectRatio="xMinYMin meet"></svg>
+		</div>
+	</div>
+</div>
 <script>
 {% autoescape off %}
 var data = {{ choices }}, 
@@ -33,6 +65,6 @@ var data = {{ choices }},
 {% endautoescape %}
 </script>
 <script src="https://d3js.org/d3.v3.min.js"></script>
-<script src="{% static 'polls/poll_client_interface.js' %}"></script>
+<script src="{% static 'polls/js/poll_client_interface.js' %}"></script>
 {% endif %}
 {% endblock %}

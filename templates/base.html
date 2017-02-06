@@ -1,16 +1,51 @@
+{% load staticfiles %}
 <!DOCTYPE html>
-<meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
-<html lang="en">
-<head>
-    {% block title %}{% endblock %}
-    {% load staticfiles %}
-	<link rel="stylesheet" type="text/css" href="{% static 'base_style.css' %}" />
-	{% block head %}{% endblock %}
-</head>
+<html lang="{{ LANGUAGE_CODE }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-<body>
-    <div id="content">
-        {% block content %}{% endblock %}
-    </div>
-</body>
+    <title>Pop Quiz</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/starter-template.css' %}" rel="stylesheet">
+    {% block head %}{% endblock %}
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <!--
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          -->
+          <a class="navbar-brand" href="/">Pop Quiz</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+    {% block content %}{% endblock %}
+    
+    <footer>
+    </footer>
+    
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  </body>
 </html>

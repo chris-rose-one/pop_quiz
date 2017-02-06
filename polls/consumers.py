@@ -22,7 +22,7 @@ def ws_vote(message):
 
 	if question.is_active() and question.is_open():
 		if not selected_choice.votes >= question.vote_limit:
-			if question.one_vote_only and http_session.get('has_voted') == False:
+			if question.one_vote_only and http_session['has_voted'] == False:
 				http_session['has_voted'] = True
 				http_session.save()
 				selected_choice.votes += 1
