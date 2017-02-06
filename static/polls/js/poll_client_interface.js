@@ -8,7 +8,7 @@ var x = d3.scale.linear()
     .range([12, width]);
 
 var chart = d3.select(".chart")
-	.attr("viewBox", "0 0 420 " + ((barHeight + 25) * data.length + 15));
+	.attr("viewBox", "0 0 420 " + ((barHeight + 25 + 5) * data.length - 5));
 
 var bar = chart.selectAll("g")
     .data(data)
