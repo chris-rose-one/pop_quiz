@@ -28,12 +28,10 @@
 			<h2>{{ question.question_text }}</h2>
 		</div>
 	</div>
-</div>
-<div class="description container">
 	<div class="row">
 		<div class="col-xs-12 col-xs-offset-0 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
 			<div class="panel panel-default">
-				<div class="panel-body">
+				<div class="description panel-body">
 					{% if not question.is_open %}
 					voting has closed for the current poll.</br>a fresh poll will open soon.
 					{% elif question.is_open %}
@@ -49,8 +47,6 @@
 			</div>
 		</div>
 	</div>
-</div>
-<div class="container">
 	<div class="row">
 		<div class="col-xs-12 col-xs-offset-0 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
 			<svg class="chart" xmlns="http://www.w3.org/2000/svg" version="1.1" preserveAspectRatio="xMinYMin meet"></svg>
@@ -59,9 +55,9 @@
 </div>
 <script>
 {% autoescape off %}
-var data = {{ choices }}, 
-	vote_limit = {{ question.vote_limit }},
-	question_id = {{ question.id }};
+var data = {{ choices }};
+var vote_limit = {{ question.vote_limit }};
+var question_id = {{ question.id }};
 {% endautoescape %}
 </script>
 <script src="https://d3js.org/d3.v3.min.js"></script>

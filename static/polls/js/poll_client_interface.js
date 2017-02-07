@@ -8,7 +8,7 @@ var x = d3.scale.linear()
     .range([12, width]);
 
 var chart = d3.select(".chart")
-	.attr("viewBox", "0 0 420 " + ((barHeight + 25 + 5) * data.length - 5));
+	.attr("viewBox", "0 0 " + width + " " + ((barHeight + 25 + 5) * data.length - 5));
 
 var bar = chart.selectAll("g")
     .data(data)
@@ -23,9 +23,6 @@ var bar = chart.selectAll("g")
     		"question_id": question_id,
     		"choice_id": d3.select(this).attr("id")
 	}));
-	//if(d3.select("p.description").style("display") == "block") {
-	//	d3.select("p.description").style("display", "none");
-	//}
     });
 
 bar.append("rect")
