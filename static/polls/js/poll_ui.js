@@ -1,4 +1,4 @@
-socket = new WebSocket("wss://" + window.location.host);
+socket = new WebSocket("ws://" + window.location.host);
 
 var width = 420,
     barHeight = 50;
@@ -19,11 +19,17 @@ var bar = chart.selectAll("g")
 		else { return "translate(0," + 25 + ")"; }
 	})
 	.on("click", function(d) {
-    	socket.send(JSON.stringify({
-    		"question_id": question_id,
-    		"choice_id": d3.select(this).attr("id")
-	}));
-    });
+		if(has_voted == false || one_vote_only == false){
+			socket.send(JSON.stringify({
+				"question_id": question_id,
+				"choice_id": d3.select(this).attr("id")
+			}));
+			if(one_vote_only == true) {
+				d3.select(".panel-body").text("your choice has been tallied.\nThanks for your contribution.");
+				has_voted = true;
+			}
+		}
+	});
 
 bar.append("rect")
 	.attr("width", width)

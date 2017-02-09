@@ -14,9 +14,10 @@
 		<div class="col-xs-12 col-xs-offset-0 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
 			</br>
 			<div class="panel panel-default">
-				<div class="panel-body">
-					{{ error_message }}
+				<div class="panel-heading">
+					<h3 class="panel-title">the polls have closed</h3>
 				</div>
+				<div class="panel-body">There isn't a poll running at the moment!</div>
 			</div>
 		</div>
 	</div>
@@ -31,19 +32,29 @@
 	<div class="row">
 		<div class="col-xs-12 col-xs-offset-0 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
 			<div class="panel panel-default">
-				<div class="description panel-body">
-					{% if not question.is_open %}
-					voting has closed for the current poll.</br>a fresh poll will open soon.
-					{% elif question.is_open %}
-						{% if  question.one_vote_only and not has_voted %}
-						one vote only
-						{% elif question.one_vote_only and has_voted %}
-						you have already cast your vote.</br>Thanks for your contribution
-						{% else %}
-						vote as many times as you like
-						{% endif %}
-					{% endif %}
+				{% if not question.is_open %}
+				<div class="panel-heading">
+					<h3 class="panel-title">voting has closed</h3>
 				</div>
+				<div class="panel-body">voting has closed for the current poll.</br>a fresh poll will open soon.</div>
+				{% elif question.is_open %}
+				{% if  question.one_vote_only and not has_voted %}
+				<div class="panel-heading">
+					<h3 class="panel-title">one vote only</h3>
+				</div>
+				<div class="panel-body">votes are limited to one per person</div>
+				{% elif question.one_vote_only and has_voted %}
+				<div class="panel-heading">
+					<h3 class="panel-title">one vote only</h3>
+				</div>
+				<div class="panel-body">you have already cast your vote.</div>
+				{% else %}
+				<div class="panel-heading">
+					<h3 class="panel-title">the polls are open</h3>
+				</div>
+				<div class="panel-body">vote as many times as you like.</div>
+				{% endif %}
+				{% endif %}
 			</div>
 		</div>
 	</div>
@@ -56,11 +67,13 @@
 <script>
 {% autoescape off %}
 var data = {{ choices }};
+var one_vote_only = {{ question.one_vote_only|yesno:"true,false" }};
+var has_voted = {{ has_voted|yesno:"true,false" }};
 var vote_limit = {{ question.vote_limit }};
 var question_id = {{ question.id }};
 {% endautoescape %}
 </script>
 <script src="https://d3js.org/d3.v3.min.js"></script>
-<script src="{% static 'polls/js/poll_client_interface.js' %}"></script>
+<script src="{% static 'polls/js/poll_ui.js' %}"></script>
 {% endif %}
 {% endblock %}

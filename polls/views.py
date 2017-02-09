@@ -3,14 +3,9 @@ from django.utils import timezone
 from django.shortcuts import render
 from django.template import loader
 
-from .models import Question, Choice
+from .models import Question, Choice, get_active_poll
 
 def poll(request):
-	def get_active_poll():
-		for question in Question.objects.all():
-			if question.is_active(): return question
-		else: return False
-
 	question = get_active_poll()
 	if question:
 		if not question.id == request.session.get('loaded_question'):
