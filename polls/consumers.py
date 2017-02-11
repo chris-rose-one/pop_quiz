@@ -20,8 +20,8 @@ def ws_receive(message):
 	print(dir(message))
 	print(data)
 	vote = data.get('vote')
-	if vote:
-		print('vote' + str(vote))
+	if 'vote' in data:
+		vote = data.get('vote')
 		question = Question.objects.get(pk=vote.get('question_id'))
 		selected_choice = question.choice_set.get(pk=vote.get('choice_id'))
 
@@ -39,6 +39,7 @@ def ws_receive(message):
 					selected_choice.votes += 1
 					selected_choice.save()
 					Group("poll").send({"text": json.dumps({"poll_update": question.ordered_list_choices()}),})
+
 	elif 'undo' in data:
 		undo = data.get('undo')
 		question = Question.objects.get(pk=undo.get('question_id'))
