@@ -1,3 +1,4 @@
+import json
 import datetime
 from django.utils import timezone
 from django.shortcuts import render
@@ -13,7 +14,7 @@ def poll(request):
 			request.session['has_voted'] = False
 			request.session.set_expiry(question.seconds_remaining())
 		return render(request, 'polls/poll.html', {
-			'question': question, 'choices': question.choices_as_json(), 'has_voted': request.session['has_voted']})
+			'question': question, 'choices': json.dumps(question.ordered_list_choices()), 'has_voted': request.session['has_voted']})
 	else:
 		return render(request, 'polls/poll.html', {
 			'error_message': "There isn't a poll running at the moment!"})

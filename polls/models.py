@@ -1,4 +1,3 @@
-import json
 import datetime
 from django.db import models
 from django.utils import timezone
@@ -72,12 +71,12 @@ class Question(models.Model):
 		diff = (self.starting_time + datetime.timedelta(minutes = self.running_time)) - timezone.now()
 		return diff.total_seconds()
 
-	def choices_as_json(self):
+	def ordered_list_choices(self):
 		tmp_data = []
 		for choice in self.choice_set.all():
 			tmp_data.append({'id': choice.id, 'choice_text': choice.choice_text, 'votes': choice.votes})
 		sorted_data = sorted(tmp_data, key=lambda k: k['id'])
-		return json.dumps(sorted_data)
+		return sorted_data
 
 class Choice(models.Model):
 	question = models.ForeignKey(Question, on_delete=models.CASCADE)

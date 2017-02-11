@@ -63,6 +63,14 @@
 			<svg class="chart" xmlns="http://www.w3.org/2000/svg" version="1.1" preserveAspectRatio="xMinYMin meet"></svg>
 		</div>
 	</div>
+	{% if question.one_vote_only and question.is_open %}
+	</br>
+	<div class="row">
+		<div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+			<button type="button" class="btn btn-default btn-block {% if not has_voted %} active disabled {% endif %}">Undo my precious vote</button>
+		</div>
+	</div>
+	{% endif %}
 </div>
 <script>
 {% autoescape off %}

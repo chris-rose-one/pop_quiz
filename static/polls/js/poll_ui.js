@@ -1,16 +1,16 @@
 socket = new WebSocket("ws://" + window.location.host);
 
-var width = 420,
-    barHeight = 50;
+width = 420;
+barHeight = 50;
 
-var x = d3.scale.linear()
+x = d3.scale.linear()
     .domain([0, vote_limit])
     .range([12, width]);
 
-var chart = d3.select(".chart")
+chart = d3.select(".chart")
 	.attr("viewBox", "0 0 " + width + " " + ((barHeight + 25 + 5) * data.length - 5));
 
-var bar = chart.selectAll("g")
+bar = chart.selectAll("g")
     .data(data)
   .enter().append("g")
   	.attr("id", function(d) { return d.id; })
@@ -20,14 +20,10 @@ var bar = chart.selectAll("g")
 	})
 	.on("click", function(d) {
 		if(has_voted == false || one_vote_only == false){
-			socket.send(JSON.stringify({
+			socket.send(JSON.stringify({ "vote": {
 				"question_id": question_id,
-				"choice_id": d3.select(this).attr("id")
-			}));
-			if(one_vote_only == true) {
-				d3.select(".panel-body").text("your choice has been tallied.\nThanks for your contribution.");
-				has_voted = true;
-			}
+				"choice_id": parseInt(d3.select(this).attr("id"))
+			}}));
 		}
 	});
 
@@ -49,7 +45,7 @@ bar.append("text")
     .attr("dy", ".35em")
     .text(function(d) { return d.votes; });
 
-var labels = chart.append("g")
+labels = chart.append("g")
   .selectAll("text")
 	.data(data)
   .enter().append("text")
@@ -60,15 +56,44 @@ var labels = chart.append("g")
   	})
     .text(function(d) { return d.choice_text; });
 
-socket.onmessage = function(message) {
-	data = JSON.parse(message.data);
-	var x = d3.scale.linear()
-    	.domain([0, vote_limit])
-    	.range([12, width]);
+if(one_vote_only == true) {
+	undo_button = d3.select(".btn");
+	undo_button.on("click", function() {
+		if(undo_button.classed("disabled") == false) {
+			socket.send(JSON.stringify({"undo": {"question_id": question_id}}));
+		}
+	});
+}
+
+function update_poll(data) {
 	bar.data(data)
 	bar.select(".votes_bar")
 		.attr("width", function(d) { return x(d.votes); });
 	bar.select("text")
 		.attr("x", function(d) { return x(d.votes) - 3; })
 		.text(function(d) { return d.votes; });
+
+}
+
+socket.onmessage = function(message) {
+	json_data = JSON.parse(message.data);
+	console.log(json_data);
+	if("poll_update" in json_data) {
+		data = json_data['poll_update']
+		update_poll(data);
+	}
+	else if("vote_confirm" in json_data) {
+		d3.select(".panel-body").text("your choice has been tallied.");
+		has_voted = true;
+		if(undo_button) {
+			undo_button.classed({'active': false, 'disabled': false});
+		}
+	}
+	else if("undo_confirm" in json_data) {
+		d3.select(".panel-body").text("spend your vote wisely, but do it before closing time.");
+		has_voted = false;
+		if(undo_button) {
+			undo_button.classed({'active': true, 'disabled': true});
+		}
+	}
 }
