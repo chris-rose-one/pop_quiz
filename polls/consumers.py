@@ -17,9 +17,6 @@ def ws_connect(message):
 def ws_receive(message):
 	data = json.loads(message['text'])
 	http_session = SessionStore(session_key=message.channel_session.get('http_session_key'))
-	print(dir(message))
-	print(data)
-	vote = data.get('vote')
 	if 'vote' in data:
 		vote = data.get('vote')
 		question = Question.objects.get(pk=vote.get('question_id'))
