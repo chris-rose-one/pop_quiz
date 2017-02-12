@@ -83,14 +83,14 @@ socket.onmessage = function(message) {
 		update_poll(data);
 	}
 	else if("vote_confirm" in json_data) {
-		d3.select(".panel-body").text("your choice has been tallied.");
+		d3.select(".panel-body").text("your vote has been tallied.");
 		has_voted = true;
 		if(undo_button) {
 			undo_button.classed({'active': false, 'disabled': false});
 		}
 	}
 	else if("undo_confirm" in json_data) {
-		d3.select(".panel-body").text("spend your vote wisely, but do it before closing time.");
+		d3.select(".panel-body").text("spend your vote wisely, do it before closing.");
 		has_voted = false;
 		if(undo_button) {
 			undo_button.classed({'active': true, 'disabled': true});
