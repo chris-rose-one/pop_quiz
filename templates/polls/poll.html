@@ -22,7 +22,8 @@
 		</div>
 	</div>
 </div>
-{% elif question %}
+{% endif %}
+{% if question %}
 <div class="container">
 	<div class="row">
 		<div class="col-xs-12 col-xs-offset-0 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
@@ -78,6 +79,7 @@ var data = {{ choices }};
 var one_vote_only = {{ question.one_vote_only|yesno:"true,false" }};
 var has_voted = {{ has_voted|yesno:"true,false" }};
 var vote_limit = {{ question.vote_limit }};
+var poll_status = {{ question.is_open|yesno:"true,false" }};
 var question_id = {{ question.id }};
 {% endautoescape %}
 </script>

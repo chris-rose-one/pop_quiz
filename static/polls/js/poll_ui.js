@@ -19,11 +19,12 @@ bar = chart.selectAll("g")
 		else { return "translate(0," + 25 + ")"; }
 	})
 	.on("click", function(d) {
-		if(has_voted == false || one_vote_only == false){
-			socket.send(JSON.stringify({ "vote": {
+		if(has_voted == false || one_vote_only == false && poll_status == true){
+			socket.send(JSON.stringify({
+				"vote": true,
 				"question_id": question_id,
 				"choice_id": parseInt(d3.select(this).attr("id"))
-			}}));
+			}));
 		}
 	});
 
@@ -60,7 +61,7 @@ if(one_vote_only == true) {
 	undo_button = d3.select(".btn");
 	undo_button.on("click", function() {
 		if(undo_button.classed("disabled") == false) {
-			socket.send(JSON.stringify({"undo": {"question_id": question_id}}));
+			socket.send(JSON.stringify({"undo": true, "question_id": question_id}));
 		}
 	});
 }
@@ -83,17 +84,25 @@ socket.onmessage = function(message) {
 		update_poll(data);
 	}
 	else if("vote_confirm" in json_data) {
-		d3.select(".panel-body").text("your vote has been tallied.");
 		has_voted = true;
+		d3.select(".panel-body").text("your vote has been tallied.");
 		if(undo_button) {
 			undo_button.classed({'active': false, 'disabled': false});
 		}
 	}
 	else if("undo_confirm" in json_data) {
-		d3.select(".panel-body").text("spend your vote wisely, do it before closing.");
 		has_voted = false;
+		d3.select(".panel-body").text("spend your vote wisely before the poll closes.");
 		if(undo_button) {
 			undo_button.classed({'active': true, 'disabled': true});
+		}
+	}
+	else if("poll_status" in json_data) {
+		poll_status = false;
+		d3.select(".panel-title").text("voting has closed");
+		d3.select(".panel-body").html("voting has closed for the current poll.<br/>a fresh poll will open soon.");
+		if(undo_button) {
+			undo_button.classed({'active': true, 'disabled': true, 'hidden': true});
 		}
 	}
 }
