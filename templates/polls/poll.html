@@ -4,6 +4,8 @@
 {% block title %}<title>Pop Quiz</title>{% endblock %}
 {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="{% static 'polls/css/poll_style.css' %}" />
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script src="{% static 'polls/js/poll_ui.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -12,13 +14,28 @@
 <div class="container">
 	<div class="row">
 		<div class="col-xs-12 col-xs-offset-0 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
-			</br>
+			<h2>Pop Quiz</h2>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12 col-xs-offset-0 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h3 class="panel-title">the polls have closed</h3>
 				</div>
 				<div class="panel-body">There isn't a poll running at the moment!</div>
 			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12 col-xs-offset-0 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+			<svg class="chart" xmlns="http://www.w3.org/2000/svg" version="1.1" preserveAspectRatio="xMinYMin meet"></svg>
+		</div>
+	</div>
+	</br>
+	<div class="row">
+		<div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+			<button type="button" class="btn btn-default btn-block active disabled hidden">Undo my precious vote</button>
 		</div>
 	</div>
 </div>
@@ -76,14 +93,13 @@
 <script>
 {% autoescape off %}
 var data = {{ choices }};
-var one_vote_only = {{ question.one_vote_only|yesno:"true,false" }};
-var has_voted = {{ has_voted|yesno:"true,false" }};
-var vote_limit = {{ question.vote_limit }};
-var poll_status = {{ question.is_open|yesno:"true,false" }};
-var question_id = {{ question.id }};
+one_vote_only = {{ question.one_vote_only|yesno:"true,false" }};
+has_voted = {{ has_voted|yesno:"true,false" }};
+vote_limit = {{ question.vote_limit }};
+poll_status = {{ question.is_open|yesno:"true,false" }};
+question_id = {{ question.id }};
+render_poll(data);
 {% endautoescape %}
 </script>
-<script src="https://d3js.org/d3.v3.min.js"></script>
-<script src="{% static 'polls/js/poll_ui.js' %}"></script>
 {% endif %}
 {% endblock %}
