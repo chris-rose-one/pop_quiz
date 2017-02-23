@@ -97,7 +97,7 @@ socket.onmessage = function(message) {
 			undo_button.classed({'active': true, 'disabled': true});
 		}
 	}
-	else if("poll_status" in json_data) {
+	else if("poll_closed" in json_data) {
 		poll_status = false;
 		d3.select(".panel-title").text("voting has closed");
 		d3.select(".panel-body").html("voting has closed for the current poll.<br/>a fresh poll will open soon.");

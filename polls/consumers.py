@@ -29,7 +29,7 @@ def ws_receive(message):
 		assert isinstance(selected_choice, Choice), "choice does not exist"
 
 		if selected_choice.votes >= question.vote_limit or not question.is_open():
-			Group("poll").send({"text": json.dumps({"poll_status": False}),})
+			Group("poll").send({"text": json.dumps({"poll_closed": True}),})
 		elif question.one_vote_only and http_session['has_voted'] == False:
 			http_session['has_voted'] = True
 			http_session['vote_choice'] = data.get('choice_id')
