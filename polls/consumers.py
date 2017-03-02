@@ -10,7 +10,7 @@ from .models import Question, Choice
 @channel_session
 def ws_connect(message):
 	message.reply_channel.send({"accept": True})
-	message.channel_session['http_session_key'] = message.http_session.session_key
+	if message.http_session: message.channel_session['http_session_key'] = message.http_session.session_key
 	Group("poll").add(message.reply_channel)
 
 # Connected to websocket.receive
@@ -30,7 +30,7 @@ def ws_receive(message):
 
 		if selected_choice.votes >= question.vote_limit or not question.is_open():
 			Group("poll").send({"text": json.dumps({"poll_closed": True}),})
-		elif question.one_vote_only and http_session['has_voted'] == False:
+		elif question.one_vote_only and http_session.get('has_voted') == False:
 			http_session['has_voted'] = True
 			http_session['vote_choice'] = data.get('choice_id')
 			http_session.save()

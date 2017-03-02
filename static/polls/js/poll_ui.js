@@ -1,16 +1,18 @@
 socket = new WebSocket("wss://" + window.location.host);
+poll_status = null;
 
 function render_poll(data) {
+	
 	width = 420;
 	barHeight = 50;
 
+	chart = d3.select(".chart");
+	chart.attr("viewBox", "0 0 " + width + " " + ((barHeight + 25 + 5) * data.length - 5));
+	
 	x = d3.scale.linear()
 		.domain([0, vote_limit])
 		.range([12, width]);
-
-	chart = d3.select(".chart")
-		.attr("viewBox", "0 0 " + width + " " + ((barHeight + 25 + 5) * data.length - 5));
-
+	
 	bar = chart.selectAll("g")
 		.data(data)
 	  .enter().append("g")
@@ -20,7 +22,7 @@ function render_poll(data) {
 			else { return "translate(0," + 25 + ")"; }
 		})
 		.on("click", function(d) {
-			if(has_voted == false || one_vote_only == false && poll_status == true){
+			if((has_voted == false || one_vote_only == false) && poll_status == true){
 				socket.send(JSON.stringify({
 					"vote": true,
 					"question_id": question_id,
@@ -57,15 +59,15 @@ function render_poll(data) {
 			else { return "translate(2," + 19 + ")"; }
 		})
 		.text(function(d) { return d.choice_text; });
+}
 
-	if(one_vote_only == true) {
-		undo_button = d3.select(".btn");
-		undo_button.on("click", function() {
-			if(undo_button.classed("disabled") == false) {
-				socket.send(JSON.stringify({"undo": true, "question_id": question_id}));
-			}
-		});
-	}
+function button() {
+	undo_button = d3.select(".btn");
+	undo_button.on("click", function() {
+		if(undo_button.classed("disabled") == false) {
+			socket.send(JSON.stringify({"undo": true, "question_id": question_id}));
+		}
+	});
 }
 
 function update_poll(data) {
@@ -79,7 +81,10 @@ function update_poll(data) {
 }
 
 function refresh_poll() {
-	chart.exit().remove();
+	chart.selectAll("g").remove();
+	if(typeof(undo_button) !== 'undefined') {
+		undo_button.classed({'active': true, 'disabled': true, 'hidden': true});
+	}
 }
 
 socket.onmessage = function(message) {
@@ -92,14 +97,14 @@ socket.onmessage = function(message) {
 	else if("vote_confirm" in json_data) {
 		has_voted = true;
 		d3.select(".panel-body").text("your vote has been tallied.");
-		if(undo_button) {
+		if(typeof(undo_button) !== 'undefined') {
 			undo_button.classed({'active': false, 'disabled': false});
 		}
 	}
 	else if("undo_confirm" in json_data) {
 		has_voted = false;
 		d3.select(".panel-body").text("spend your vote wisely before the poll closes.");
-		if(undo_button) {
+		if(typeof(undo_button) !== 'undefined') {
 			undo_button.classed({'active': true, 'disabled': true});
 		}
 	}
@@ -107,21 +112,47 @@ socket.onmessage = function(message) {
 		poll_status = false;
 		d3.select(".panel-title").text("voting has closed");
 		d3.select(".panel-body").html("voting has closed for the current poll.<br/>a fresh poll will open soon.");
-		if(undo_button) {
+		if(typeof(undo_button) !== 'undefined') {
 			undo_button.classed({'active': true, 'disabled': true, 'hidden': true});
 		}
 	}
+	else if("poll_ended" in json_data) {
+		poll_status = null;
+		d3.select("h2").text("Pop Quiz");
+		d3.select(".panel-title").text("the polls have closed");
+		d3.select(".panel-body").html("There isn't a poll running at the moment!");
+		refresh_poll();
+	}
 	else if("poll_opening" in json_data) {
-		poll = json_data.get('poll_opening');
-		poll_status = true;
-		
+		poll = json_data.poll_opening;
+
 		data = poll['choices'];
 		one_vote_only = poll['one_vote_only'];
 		has_voted = poll['has_voted'];
 		vote_limit = poll['vote_limit'];
+		question_text = poll['question_text'];
 		question_id = poll['question_id'];
-		
-		refresh_poll();
+
+		d3.select("h2").text(question_text);
+		if(one_vote_only) {
+			d3.select(".panel-title").text("one vote only");
+			d3.select(".panel-body").html("votes are limited to one per person.");
+		}
+		else {
+			d3.select(".panel-title").text("the polls are open");
+			d3.select(".panel-body").html("vote as many times as you like.");
+		}
+		if(poll_status == false) {
+			refresh_poll();
+		}
 		render_poll(data);
+		if(one_vote_only) {
+			button();
+			undo_button.classed({'hidden': false});
+			if(has_voted !== true) {
+				undo_button.classed({'active': false, 'disabled': false});
+			}
+		}
+		poll_status = true;
 	}
 }

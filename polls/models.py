@@ -17,7 +17,7 @@ class Question(models.Model):
 	vote_limit = models.IntegerField(default=150)
 
 	class Meta:
-		ordering = ('-starting_time',)
+		ordering = ('starting_time',)
 		managed = False
 
 	def __str__(self):
@@ -59,4 +59,3 @@ class Choice(models.Model):
 
 	def __str__(self):
 		return self.choice_text
-
