@@ -36,10 +36,12 @@ Repository settings are configured ready to be deployed to Heroku and uses two m
 - Daphne http/websocket server
 - Django worker
 
-And requires the support of
+Autonomous real-time polling is achieved by an optional third process
+- fluidpoll worker &#35;
+
+All requires the support of
 - Redis
 - Postgresql
 
-As time elapses, polls go through a series of changes; polls close, they end and new ones begin. 
+&#35; As time elapses, polls go through a series of changes; polls close, they end and new ones begin. 
 these changes rely on time attributes within the model and an independent process to assess if one has come to pass before messaging these changes in state to clients.
-upgrade Heroku and un-comment the fluidpoll worker in Procfile for autonomous real-time polling.
