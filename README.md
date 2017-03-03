@@ -42,4 +42,5 @@ And requires the support of
 
 As time elapses, polls go through a series of changes; polls close, they end and new ones begin. 
 these changes rely on time fields within the model and a third process to assess if one has come to pass before messaging these changes in state to clients.
+this process is optional.
 - fluidpoll worker
