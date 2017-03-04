@@ -32,7 +32,7 @@ def ws_receive(message):
 			Group("poll").send({"text": json.dumps({"poll_closed": True}),})
 		elif question.one_vote_only and http_session.get('has_voted') == False:
 			http_session['has_voted'] = True
-			http_session['vote_choice'] = data.get('choice_id')
+			http_session['vote_choice'] = selected_choice.id
 			http_session.save()
 			selected_choice.votes += 1
 			selected_choice.save()
@@ -44,7 +44,7 @@ def ws_receive(message):
 			Group("poll").send({"text": json.dumps({"poll_update": question.ordered_list_choices()}),})
 
 	elif 'undo' in data:
-		if question.one_vote_only == True and http_session['has_voted'] == True:
+		if question.one_vote_only == True and http_session.get('has_voted') == True:
 			selected_choice = question.choice_set.get(pk=http_session['vote_choice'])
 
 			assert isinstance(selected_choice, Choice), "choice does not exist"

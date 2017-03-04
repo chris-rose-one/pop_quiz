@@ -1,4 +1,4 @@
-socket = new WebSocket("wss://" + window.location.host);
+socket = new ReconnectingWebSocket("wss://" + window.location.host);
 poll_status = null;
 
 function render_poll(data) {
@@ -150,7 +150,7 @@ socket.onmessage = function(message) {
 			button();
 			undo_button.classed({'hidden': false});
 			if(has_voted !== true) {
-				undo_button.classed({'active': false, 'disabled': false});
+				undo_button.classed({'active': true, 'disabled': true});
 			}
 		}
 		poll_status = true;

@@ -34,15 +34,18 @@ class Command(BaseCommand):
 				if active_question is not None:
 					active_question = None
 					last_active = timezone.now()
+					for channel in reply_channels:
+						sessions = get_reply_channel_sessions(channel)
+						sessions['http']['loaded_question'] = None
+						sessions['http']['has_voted'] = False
+						sessions['http'].save()
 				elif last_active and timezone.now() >= (last_active + datetime.timedelta(minutes=5)):
 					reply_channels = get_reply_channels()
 					for channel in reply_channels:
 						sessions = get_reply_channel_sessions(channel)
 						if sessions['http'].get('poll_status') == True \
 						  or sessions['http'].get('poll_status') == False:
-							sessions['http']['loaded_question'] = None
 							sessions['http']['poll_status'] = None
-							sessions['http']['has_voted'] = False
 							sessions['http'].save()
 							channel_layer.send(channel, {"text": json.dumps({"poll_ended": True})})
 
