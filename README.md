@@ -2,7 +2,7 @@
 
 This is a polling app with a dynamically created and updated bar graph as representation and a status panel to guide you every step of the way. It leverages the batteries included in the Django web framework to build a database backend and provide a CRUD administration system.
 
-The real work horse of this application is django channels, in particular the web socket capabilities that they bring.
+The real work horse of this application is Django channels, in particular the websocket capabilities that they bring.
 After the http page request and response is complete, messages between the server and client of poll updates,
 vote choices or changes of mind are sent via websockets as an event requires them to be.<br/>
 Essentially providing a live multi-user poll.
@@ -26,9 +26,9 @@ polls are created using the Django admin interface, here you may set the followi
 - vote limit
 	- this applies to the max votes any one choice may receive. not the overall poll
 - and then there are the choices of answers
-	- 4 choices fit my Samsung S5 nicely in free for all mode&#42;&#42;
-	- 3 choices fit with the undo button, when in one vote only mode &#42;&#42;<br/>
-    &#42;&#42; similar results when scaled up to a PC screen.
+	- 4-5 choices fit nicely in free for all mode&#42;&#42;
+	- 3-4 choices fit with the undo button, when in one vote only mode &#42;&#42;<br/>
+    &#42;&#42; tends to be the lesser when scaled up to a PC screen.
 
 It is possible to queue up a number of polls ahead of time. a pre save signal wont allow poll times to overlap
 
@@ -42,5 +42,5 @@ And requires the support of
 
 As time elapses, polls go through a series of changes; polls close, they end and new ones begin. 
 these changes rely on time fields within the model and a third process to assess if one has come to pass before messaging these changes in state to clients.
-this process is optional.
-- fluidpoll worker
+It is required to automate transitions in the queue but this process is optional.
+- fluidpoll management command
