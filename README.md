@@ -1,13 +1,13 @@
 # Pop Quiz
 
-This is a polling app with a dynamically created and updated bar graph as representation and a status panel to guide you every step of the way. It leverages the batteries included in the Django web framework to build a database backend and provide a CRUD administration system.
+This is a polling app with a dynamically created and updated bar graph as representation and a status panel to guide you every step of the way. It leverages the batteries included in the <a href="https://www.djangoproject.com">Django</a> web framework to build a database backend and provide a CRUD administration system.
 
-The real work horse of this application is Django channels, in particular the websocket capabilities that they bring.
+The real work horse of this application is <a href="https://channels.readthedocs.io">Django Channels</a>, in particular the websocket capabilities that they bring.
 After the http page request and response is complete, messages between the server and client of poll updates,
 vote choices or changes of mind are sent via websockets as an event requires them to be.<br/>
 Essentially providing a live multi-user poll.
 
-the bar graph is rendered using a javascript library d3.js (data driven documentation)
+the bar graph is rendered using a javascript library <a href="https://d3js.org">d3.js</a> (data driven documentation)
 
 the poll has two different modes<br/>
 <ol>
