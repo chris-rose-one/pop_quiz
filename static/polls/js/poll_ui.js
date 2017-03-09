@@ -146,7 +146,7 @@ socket.onmessage = function(message) {
 			refresh_poll();
 		}
 		render_poll(data);
-		if(one_vote_only) {
+		if(one_vote_only == true) {
 			button();
 			undo_button.classed({'hidden': false});
 			if(has_voted !== true) {
