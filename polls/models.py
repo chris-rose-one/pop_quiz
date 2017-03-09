@@ -8,9 +8,14 @@ def get_active_poll():
 			if question.is_active(): return question
 		else: return None
 
+def time_rounded_down(dt=None):
+	if dt == None:
+		dt = timezone.now()
+	return dt + datetime.timedelta(seconds = -dt.second + 1, microseconds = -dt.microsecond)
+
 class Question(models.Model):
 	question_text = models.CharField(max_length=200)
-	starting_time = models.DateTimeField('start time', default=timezone.now)
+	starting_time = models.DateTimeField('start time', default=time_rounded_down)
 	running_time = models.IntegerField(default=15)
 	remain_active = models.IntegerField(default=5)
 	one_vote_only = models.BooleanField(default=False)
@@ -24,7 +29,7 @@ class Question(models.Model):
 		return self.question_text
 
 	def get_end_time(self):
-		return self.starting_time + datetime.timedelta(minutes = (self.running_time + self.remain_active))
+		return self.starting_time + datetime.timedelta(minutes = (self.running_time + self.remain_active), seconds = -1)
 
 	end_time = property(get_end_time)
 

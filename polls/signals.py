@@ -1,6 +1,6 @@
 from django.dispatch import receiver
 from django.db.models.signals import pre_save
-from .models import Question
+from .models import Question, time_rounded_down
 
 @receiver(pre_save, sender=Question)
 def pre_save_handler(sender, instance, *args, **kwargs):
@@ -8,6 +8,7 @@ def pre_save_handler(sender, instance, *args, **kwargs):
 		for i, d in enumerate(queue):
 			if d.id == value: return i
 
+	instance.starting_time = time_rounded_down(instance.starting_time)
 	temp = list(Question.objects.all())
 
 	for question in temp:
