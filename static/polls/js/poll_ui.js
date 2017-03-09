@@ -147,7 +147,9 @@ socket.onmessage = function(message) {
 		}
 		render_poll(data);
 		if(one_vote_only == true) {
-			button();
+			if(typeof(undo_button) == 'undefined') {
+				button();
+			}
 			undo_button.classed({'hidden': false});
 			if(has_voted !== true) {
 				undo_button.classed({'active': true, 'disabled': true});
