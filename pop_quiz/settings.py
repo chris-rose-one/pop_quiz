@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['mysterious-mesa-93238.herokuapp.com', 'infinite-island-29963.herokuapp.com', 'danesimpson.com']
+ALLOWED_HOSTS = ['mysterious-mesa-93238.herokuapp.com', 'infinite-island-29963.herokuapp.com', 'www.danesimpson.com']
 
 
 # Application definition
