@@ -80,7 +80,7 @@
 			<button type="button" class="btn btn-default btn-block{% if not question.one_vote only %} active disabled hidden {% elif not has_voted and question.is_open %} active disabled {% endif %}">
 				Undo my precious vote
 			</button>
-			{% elif question %}
+			{% if question %}
 			<script>button();</script>
 			{% endif %}
 		</div>
