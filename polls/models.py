@@ -15,7 +15,7 @@ def time_rounded_down(dt=None):
 
 class Question(models.Model):
 	question_text = models.CharField(max_length=200)
-	starting_time = models.DateTimeField('start time', default=time_rounded_down)
+	starting_time = models.DateTimeField('start time', default=timezone.now)
 	running_time = models.IntegerField(default=15)
 	remain_active = models.IntegerField(default=5)
 	one_vote_only = models.BooleanField(default=False)
