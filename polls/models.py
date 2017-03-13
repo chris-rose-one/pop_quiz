@@ -23,7 +23,6 @@ class Question(models.Model):
 
 	class Meta:
 		ordering = ('starting_time',)
-		managed = False
 
 	def __str__(self):
 		return self.question_text
