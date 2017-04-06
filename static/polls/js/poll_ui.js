@@ -11,7 +11,7 @@ function render_poll(data) {
 	chart = d3.select(".chart");
 	chart.attr("viewBox", "0 0 " + width + " " + ((barHeight + 25 + 5) * data.length - 5));
 	
-	x = d3.scale.linear()
+	x = d3.scaleLinear()
 		.domain([0, vote_limit])
 		.range([12, width]);
 	
@@ -85,7 +85,9 @@ function update_poll(data) {
 function refresh_poll() {
 	chart.selectAll("g").remove();
 	if(typeof(undo_button) !== 'undefined') {
-		undo_button.classed({'active': true, 'disabled': true, 'hidden': true});
+		undo_button.classed('active', true);
+		undo_button.classed('disabled', true);
+		undo_button.classed('hidden', true);
 	}
 }
 
@@ -100,14 +102,16 @@ socket.onmessage = function(message) {
 		has_voted = true;
 		d3.select(".panel-body").text("your vote has been tallied.");
 		if(typeof(undo_button) !== 'undefined') {
-			undo_button.classed({'active': false, 'disabled': false});
+			undo_button.classed('active', false);
+			undo_button.classed('disabled', false);
 		}
 	}
 	else if("undo_confirm" in json_data) {
 		has_voted = false;
 		d3.select(".panel-body").text("spend your vote wisely before the poll closes.");
 		if(typeof(undo_button) !== 'undefined') {
-			undo_button.classed({'active': true, 'disabled': true});
+			undo_button.classed('active', true);
+			undo_button.classed('disabled', true);
 		}
 	}
 	else if("poll_closed" in json_data) {
@@ -115,7 +119,9 @@ socket.onmessage = function(message) {
 		d3.select(".panel-title").text("voting has closed");
 		d3.select(".panel-body").html("voting has closed for the current poll.<br/>a fresh poll will open soon.");
 		if(typeof(undo_button) !== 'undefined') {
-			undo_button.classed({'active': true, 'disabled': true, 'hidden': true});
+			undo_button.classed('active', true);
+			undo_button.classed('disabled', true);
+			undo_button.classed('hidden', true);
 		}
 	}
 	else if("poll_ended" in json_data) {
@@ -152,9 +158,10 @@ socket.onmessage = function(message) {
 			if(typeof(undo_button) == 'undefined') {
 				button();
 			}
-			undo_button.classed({'hidden': false});
+			undo_button.classed('hidden', false);
 			if(has_voted !== true) {
-				undo_button.classed({'active': true, 'disabled': true});
+				undo_button.classed('active', true);
+				undo_button.classed('disabled', true);
 			}
 		}
 		poll_status = true;

@@ -50,11 +50,10 @@ class Question(models.Model):
 		return diff.total_seconds()
 
 	def ordered_list_choices(self):
-		tmp_data = []
-		for choice in self.choice_set.all():
-			tmp_data.append({'id': choice.id, 'choice_text': choice.choice_text, 'votes': choice.votes})
-		sorted_data = sorted(tmp_data, key=lambda k: k['id'])
-		return sorted_data
+		data = []
+		for choice in self.choice_set.order_by('id'):
+			data.append({'id': choice.id, 'choice_text': choice.choice_text, 'votes': choice.votes})
+		return data
 
 class Choice(models.Model):
 	question = models.ForeignKey(Question, on_delete=models.CASCADE)
